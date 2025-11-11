@@ -1,4 +1,4 @@
-# Science Arena Challenge - Example Submission
+# AI Scientist Challenge - Example Submission
 
 This is a demonstration project that implements four endpoints for scientific research tasks using LLM models.
 

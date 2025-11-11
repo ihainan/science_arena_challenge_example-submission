@@ -15,10 +15,16 @@ load_dotenv()
 
 app = FastAPI(title="Science Arena Challenge Example Submission")
 
-# Initialize AsyncOpenAI client
+# Initialize AsyncOpenAI client for LLM models
 client = AsyncOpenAI(
     base_url=os.getenv("SCI_MODEL_BASE_URL"),
     api_key=os.getenv("SCI_MODEL_API_KEY")
+)
+
+# Initialize AsyncOpenAI client for embedding model
+embedding_client = AsyncOpenAI(
+    base_url=os.getenv("SCI_EMBEDDING_BASE_URL"),
+    api_key=os.getenv("SCI_EMBEDDING_API_KEY")
 )
 
 
@@ -47,11 +53,16 @@ async def get_embedding(text: str) -> List[float]:
     Get embedding vector for text using embedding model
     """
     try:
-        response = await client.embeddings.create(
+        response = await embedding_client.embeddings.create(
             model=os.getenv("SCI_EMBEDDING_MODEL"),
             input=text
         )
-        return response.data[0].embedding
+        embedding = response.data[0].embedding
+        # Log embedding results (truncated)
+        print(f"[get_embedding] Text: {text[:100]}{'...' if len(text) > 100 else ''}")
+        print(f"[get_embedding] Embedding dimension: {len(embedding)}")
+        print(f"[get_embedding] Embedding (first 5 values): {embedding[:5]}")
+        return embedding
     except Exception as e:
         print(f"Embedding error: {str(e)}")
         return []

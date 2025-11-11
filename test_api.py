@@ -6,7 +6,7 @@ import base64
 import httpx
 import asyncio
 
-BASE_URL = "http://localhost:31222"
+BASE_URL = "http://localhost:3000"
 PDF_FILE = "attention_is_all_you_need.pdf"
 
 
